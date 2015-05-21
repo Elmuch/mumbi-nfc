@@ -1,4 +1,4 @@
-This app depends on libnfc, please ensure it is install before running. 
+This app depends on libnfc, ensure it is installed before running. 
 
 Install from  https://bintray.com/nfc-tools/sources/libnfc
 
