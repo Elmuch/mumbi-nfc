@@ -45,9 +45,13 @@ function onReadNdefTagButtonClicked() {
 
 function readNdefTag(callback) {
   chrome.nfc.read(device, {}, function(type, ndef) {
+    var ul = $('<ul/>',{'class': 'list-unstyled'})
     log('Found ' + ndef.ndef.length + ' NFC Tag(s)');
     for (var i = 0; i < ndef.ndef.length; i++)
-      log('NFC Tag', ndef.ndef[i]);
+      ul.append($('<li>',{
+        'text': ndef.ndef[i].text
+      }))
+    $('#user-data').append(ul)
     callback();
   });
 }
@@ -67,22 +71,28 @@ function readMifareTag(callback) {
 
 function onWriteNdefTagButtonClicked() {
   var ndefType = "text"
-  var ndefValue = "Hello testy"
+  var ndefValue = "Hello test"
   handleDeviceTimeout(writeNdefTag, [ndefType, ndefValue]);
 }
 
 function writeNdefTag(ndefType, ndefValue, callback) {
-  var ndef = {};
-  ndef['text'] = ndefValue;
-  chrome.nfc.write(device, {"ndef": [ndef]}, function(rc) {
-    if (!rc) {
-      log('NFC Tag written!');
-    } else {
-      log('NFC Tag write operation failed', rc);
-    }
-    callback();
+  $('form').submit(function(event){
+    var ndef = [
+      {"text": $('#first-name').val()},
+      {"text": $('#last-name').val() }
+    ];
+
+    chrome.nfc.write(device, {"ndef": ndef}, function(rc) {
+      if (!rc) {
+        log('NFC Tag written!');
+      } else {
+        log('NFC Tag write operation failed', rc);
+      }
+      callback();
+    });
+    return false;
   });
-}
+};
 
 function onWriteMifareTagButtonClicked() {
   try {
@@ -165,6 +175,16 @@ document.querySelector('#read-ndef').addEventListener('click', onReadNdefTagButt
 document.querySelector('#write-ndef').addEventListener('click', onWriteNdefTagButtonClicked);
 
 document.querySelector('#logContainer').classList.add('small');
+
+$('#write-tab').click(function(event){
+  $('#read-template').hide()
+  $('#write-template').fadeIn(1000);
+})
+
+$('#read-ndef').click(function(event){
+  $('#write-template').hide();
+  $('#read-template').fadeIn(1000);
+})
 
 // document.querySelector('#read-mifare pre').textContent = readMifareTag.toString();
 

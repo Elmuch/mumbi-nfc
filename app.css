@@ -1,6 +1,11 @@
 .html{
   overflow: auto !important;
 }
+
+#read-template,#write-template{
+  display: none;
+}
+
 .page-header{
   text-align:center;
   font-weight:700;

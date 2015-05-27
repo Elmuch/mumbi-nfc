@@ -13,19 +13,82 @@
     </div>
     <div class="col-sm-4">
       <ul class="list-group">
-        <li class="list-group-item" id="write-ndef">Write</li>
+        <li class="list-group-item" id="write-tab">Write</li>
         <li class="list-group-item" id="read-ndef">Read</li> 
       </ul>
     </div>
     <div class="col-sm-8">
-      <div class="panel panel-default">
-        <div class="panel-heading">HIS AWESOMENESS</div>
-        <div class="panel-body"> 
-          <ul class="list-unstyled">
-            <li>Name:  Elijah Gachuhi</li>
-             <li> Last Compensation: 902900000</li> 
-             <li>Comments: Beware your awesomeness,your awesomeness is contigous</li> 
-          </ul>
+      <form class="form-horizontal" id='write-template'>
+        <fieldset>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="first-name">First Name</label>  
+          <div class="col-md-4">
+          <input id="first-name" name="first-name" 
+            type="text" placeholder="First Name" 
+            class="form-control input-md">
+            
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="last-name">Last Name</label>  
+          <div class="col-md-4">
+          <input id="last-name" name="last-name" type="text" placeholder="Last Name" class="form-control input-md">
+            
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="previous-amount">Previous Amount</label>  
+          <div class="col-md-4">
+          <input id="previous-amount" name="previous-amount" type="text" placeholder="Previous Amount" class="form-control input-md">
+            
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="amount-dispensed">Amount Dispensed</label>  
+          <div class="col-md-4">
+          <input id="amount-dispensed" name="amount-dispensed" type="text" placeholder="Amount Dispensed" class="form-control input-md">
+            
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="date">Date</label>  
+          <div class="col-md-4">
+          <input id="date" name="date" type="text" placeholder="Time Stamp" class="form-control input-md">
+            
+          </div>
+        </div>
+
+        <!-- File Button --> 
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="Upload Button">Upload Photo</label>
+          <div class="col-md-4">
+            <input id="Upload Button" name="Upload Button" class="input-file" type="file">
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="write-ndef"></label>
+          <div class="col-md-4">
+            <button id="write-ndef" name="write-ndef" class="btn btn-default">Write to Tag</button>
+          </div>
+        </div>
+
+        </fieldset>
+      </form>
+      <div class="panel panel-default" id='read-template'>
+<!--         <div class="panel-heading">HIS AWESOMENESS</div> -->
+        <div class="panel-body" id="user-data">
+
         </div>
       </div>
     </div>
@@ -51,7 +114,7 @@
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
   <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="bower_components/chrome-nfc/dist/chrome-nfc.js"></script>
-  <script src="lib/chrome-nfc.js"></script>
   <script src="app.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>
