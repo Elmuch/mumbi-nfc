@@ -3,7 +3,7 @@
 }
 .page-header{
   text-align:center;
-  font-weight:bold;
+  font-weight:700;
 }
 
 .panel-heading {
@@ -37,7 +37,7 @@
   padding-top: 50px;
   margin-top: 15px;
 }
-.notifications{
+.logs{
   border: 1px solid #ddd;
   margin-top: 36px; 
   padding: 25px;
