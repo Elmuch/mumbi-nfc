@@ -1,5 +1,5 @@
-.html{
-  overflow: auto !important;
+html{
+  overflow: auto;
 }
 
 #read-template,#write-template{

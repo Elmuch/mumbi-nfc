@@ -16,14 +16,18 @@ var compatibleDevices = [
 var device = null;
 
 function log(message, object) {
-  var logArea = document.querySelector('.logs');
-  var pre = document.createElement('pre');
-  pre.textContent = message;
-  if (object)
-    pre.textContent += ': ' + JSON.stringify(object, null, 2) + '\n';
-  logArea.appendChild(pre);
-  logArea.scrollTop = logArea.scrollHeight;
-  document.querySelector('#logContainer').classList.remove('small');
+  $logArea = $('.logs');
+  $pre = $('<pre/>',{
+    "text": message
+  })
+
+  // if (object){
+  //   pre.textContent += ': ' + JSON.stringify(object, null, 2) + '\n';
+  // }
+  
+ $logArea.html($pre);
+  // logArea.scrollTop = logArea.scrollHeight;
+  // document.querySelector('#logContainer').classList.remove('small');
 }
 
 function handleDeviceTimeout(func, args) {
