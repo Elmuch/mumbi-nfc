@@ -46,4 +46,24 @@ html{
   border: 1px solid #ddd;
   margin-top: 36px; 
   padding: 25px;
+  padding-top: 34px;
+}
+
+.clear-logs{
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  position: absolute;
+  float: right;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.clear-logs:hover{
+  color: gray;
+}
+
+#user-data{
+  margin-top: 10px;
 }
