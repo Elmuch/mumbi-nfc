@@ -1,36 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>chrome.nfc API sample</title>
-  <link href="lib/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <title>Mumbi</title>
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
   <link href="app.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-  <div class="wrapper">
+  <div class="wrapper container">
     <div class="page-header">
-      <h1>chrome.nfc API sample</h1>
+      <h1>SNP PAYMENTS REGISTER</h1>
     </div>
+    <div class="col-sm-4">
+      <ul class="list-group">
+        <li class="list-group-item" id="write-tab">Write</li>
+        <li class="list-group-item" id="read-ndef">Read</li> 
+        <li class="list-group-item" id="read-ndef">Emulate</li> 
+      </ul>
+    </div>
+    <div class="col-sm-8">
+      <form class="form-horizontal" id='write-template'>
+        <fieldset>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="c-id">ID</label>  
+          <div class="col-md-4">
+          <input id="c-id" name="c-id" type="text" 
+            class="form-control input-md " disabled>
+            
+          </div>
+        </div>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="payment">Payment</label>  
+          <div class="col-md-4">
+          <input id="payment" name="payment" type="text" 
+            placeholder="Amount Dispensed" class="form-control input-md">
+            
+          </div>
+        </div>
 
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#home" data-toggle="tab">Device</a></li>
-      <li class="dropdown">
-        <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Read <b class="caret"></b></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="#read-ndef" tabindex="-1" data-toggle="tab">Read NDEF Tag</a></li>
-          <li><a href="#read-mifare" tabindex="-1" data-toggle="tab">Read Mifare Classic Tag</a></li>
-        </ul>
-      </li>
-      <li class="dropdown">
-        <a href="#" id="myTabDrop2" class="dropdown-toggle" data-toggle="dropdown">Write <b class="caret"></b></a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop2">
-          <li><a href="#write-ndef" tabindex="-1" data-toggle="tab">Write NDEF Tag</a></li>
-          <li><a href="#write-mifare" tabindex="-1" data-toggle="tab">Write Mifare Classic Tag</a></li>
-        </ul>
-      </li>
-      <li><a href="#emulate" data-toggle="tab">Emulate</a></li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id="home">
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="date">Date</label>  
+          <div class="col-md-4">
+          <input id="date" name="date" type="text" placeholder="Time Stamp" 
+            class="form-control input-md" disabled>
+            
+          </div>
+        </div>
+
+        <!-- File Button --> 
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="Upload Button">Upload Photo</label>
+          <div class="col-md-4">
+            <input id="Upload Button" name="Upload Button" class="input-file" type="file">
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="write-ndef"></label>
+          <div class="col-md-4">
+            <button id="write-ndef" name="write-ndef" class="btn btn-default">Write to Card</button>
+          </div>
+        </div>
+
+        </fieldset>
+      </form>
+      <div class="panel panel-default" id='read-template'>
+        <div class="panel-body">
+          <div class="image-wrapper">
+            <img src="images/placeholder.png">
+          </div>
+          <div id="user-data">
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="info-area col-sm-12"> 
+      <div class="col-sm-4">
         <img id="device-thumbnail" class="hidden"/>
         <dl id="device-info">
           <dt>Name</dt>
@@ -41,87 +91,19 @@
           <dd id="device-product-id"></dd>
         </dl>
       </div>
-      <div class="tab-pane" id="read-ndef">
-        <pre></pre>
-        <button type="button" class="btn btn-default">Run</button>
-      </div>
-      <div class="tab-pane" id="read-mifare">
-        <pre></pre>
-        <button type="button" class="btn btn-default">Run</button>
-      </div>
-      <div class="tab-pane" id="write-ndef">
-        <pre></pre>
-        <form role="form">
-          <div class="form-group">
-            <label for="write-ndef-type">Pick NDEF Type:</label>
-            <select id="write-ndef-type" class="form-control">
-              <option>text</option>
-              <option>uri</option>
-              <option>aar</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="write-ndef-value">Enter NDEF Value:</label>
-            <input type="text" class="form-control" id="write-ndef-value">
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-default">Run</button>
-          </div>
-        </form>
-      </div>
-      <div class="tab-pane" id="write-mifare">
-        <pre></pre>
-        <form role="form">
-          <div class="form-group">
-            <label for="mifare-data">Enter Mifare Data:</label>
-            <textarea id ="mifare-data">
-[
-  219,   0,   3, 225,   0,  0,  0,   0,
-    0,   0,   0,   0,   0,  0,  0,   0,
-    0,   0,   0,   0,   0,  0,  0,   0,
-    0,   0,   0,   0,   0,  0,  0,   0,
-    3,  15, 209,   1,  11, 85,  3, 103,
-  111, 111, 103, 108, 101, 46, 99, 111,
-  109, 254,   0,   0,   0,  0,  0,   0,
-    0,   0,   0,   0,   0,  0,  0,   0
-]</textarea>
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-default">Run</button>
-          </div>
-        </form>
-      </div>
-      <div class="tab-pane" id="emulate">
-        <pre></pre>
-        <form role="form">
-          <div class="form-group">
-            <label for="emulate-ndef-type">Pick NDEF Type:</label>
-            <select id="emulate-ndef-type" class="form-control">
-              <option>text</option>
-              <option>uri</option>
-              <option>aar</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="emulate-ndef-value">Enter NDEF Value:</label>
-            <input type="text" class="form-control" id="emulate-ndef-value">
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-default">Run</button>
-          </div>
-        </form>
+      <div class="col-sm-8 logs" id='logContainer'>
+        <span class='clear-logs'>Clear logs</span>
+        <!-- <p class="text-info">This is happening</p>
+        <p  class="text-danger">This is happening</p>
+        <p class="text-success">This is happening</p> -->
       </div>
     </div>
   </div>
-
-  <div id="logContainer" class="small">
-    <div class="drawer"></div>
-    <div class="logs"></div>
-  </div>
-  
-  <script src="lib/jquery-2.1.0.min.js"></script>
-  <script src="lib/bootstrap.min.js"></script>
-  <script src="lib/chrome-nfc.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script type="text/javascript" src="bower_components/chrome-nfc/dist/chrome-nfc.js"></script>
+  <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.js"></script>
   <script src="app.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>

@@ -15,23 +15,29 @@ var compatibleDevices = [
 
 var device = null;
 
-function log(message, object) {
-  var logArea = document.querySelector('.logs');
-  var pre = document.createElement('pre');
-  pre.textContent = message;
-  if (object)
-    pre.textContent += ': ' + JSON.stringify(object, null, 2) + '\n';
-  logArea.appendChild(pre);
-  logArea.scrollTop = logArea.scrollHeight;
-  document.querySelector('#logContainer').classList.remove('small');
+function log(message, errorType, object) {
+  $logArea = $('.logs');
+  $pre = $('<pre/>',{
+    "text": message,
+    'class' : errorType
+  })
+
+  function flash(){
+    $pre.fadeOut(100)
+  }
+
+ $logArea.append($pre);
+ // setTimeout(flash,1000)
+  // logArea.scrollTop = logArea.scrollHeight;
+  // document.querySelector('#logContainer').classList.remove('small');
 }
 
 function handleDeviceTimeout(func, args) {
-  var timeoutInMs = 1000;
+  var timeoutInMs = 1500;
   var hasTags = false;
   setTimeout(function() {
     if (!hasTags) {
-      log('Timeout! No tag detected');
+      log('Timeout! No tag detected', 'text-danger');
     }
   }, timeoutInMs);
   var args = args || [];
@@ -45,9 +51,16 @@ function onReadNdefTagButtonClicked() {
 
 function readNdefTag(callback) {
   chrome.nfc.read(device, {}, function(type, ndef) {
-    log('Found ' + ndef.ndef.length + ' NFC Tag(s)');
+    var ul = $('<ul/>',{'class': 'list-unstyled'});
+    log('Found ' + ndef.ndef.length + ' NFC Tag(s)','text-info' );
+    ul.append($('<li/>',{
+      text: "ID: " + device.cid
+    }));
     for (var i = 0; i < ndef.ndef.length; i++)
-      log('NFC Tag', ndef.ndef[i]);
+      ul.append($('<li>',{
+        'text': ndef.ndef[i].text
+      }));
+    $('#user-data').html(ul);
     callback();
   });
 }
@@ -66,23 +79,30 @@ function readMifareTag(callback) {
 }
 
 function onWriteNdefTagButtonClicked() {
-  var ndefType = document.querySelector('#write-ndef-type').value;
-  var ndefValue = document.querySelector('#write-ndef-value').value;
-  handleDeviceTimeout(writeNdefTag, [ndefType, ndefValue]);
+  $('#c-id').val(device.cid);
+  var date = new Date()
+  $('#date').val(date.toLocaleString());
+  handleDeviceTimeout(writeNdefTag, []);
 }
 
 function writeNdefTag(ndefType, ndefValue, callback) {
-  var ndef = {};
-  ndef[ndefType] = ndefValue;
-  chrome.nfc.write(device, {"ndef": [ndef]}, function(rc) {
-    if (!rc) {
-      log('NFC Tag written!');
-    } else {
-      log('NFC Tag write operation failed', rc);
-    }
+  $('form').submit(function(event){
+    var ndef = [
+      {"text": $('#payment').val()},
+      {"text": $('#date').val()}
+    ];
+
+    chrome.nfc.write(device, {"ndef": ndef}, function(rc) {
+      if (!rc) {
+        log('Tag written successfully', 'text-success');
+      } else {
+        log('Tag write operation failed', 'text-danger',rc);
+      }
+    });
     callback();
+    return false;
   });
-}
+};
 
 function onWriteMifareTagButtonClicked() {
   try {
@@ -161,25 +181,37 @@ function enumerateDevices() {
 
 enumerateDevices();
 
-document.querySelector('#read-ndef pre').textContent = readNdefTag.toString();
-document.querySelector('#read-ndef button').addEventListener('click', onReadNdefTagButtonClicked);
+$('#read-ndef').click(onReadNdefTagButtonClicked);
+$('#write-ndef').click(onWriteNdefTagButtonClicked);
 
-document.querySelector('#read-mifare pre').textContent = readMifareTag.toString();
-document.querySelector('#read-mifare button').addEventListener('click', onReadMifareTagButtonClicked);
+$('#write-tab').click(function(event){
+  $('#read-template').hide()
+  $('#write-template').fadeIn(1000);
+})
 
-document.querySelector('#write-ndef pre').textContent = writeNdefTag.toString();
-document.querySelector('#write-ndef button').addEventListener('click', onWriteNdefTagButtonClicked);
+$('#read-ndef').click(function(event){
+  $('#write-template').hide();
+  $('#read-template').fadeIn(1000);
+})
 
-document.querySelector('#write-mifare pre').textContent = writeMifareTag.toString();
-document.querySelector('#write-mifare button').addEventListener('click', onWriteMifareTagButtonClicked);
+$('.clear-logs').click(function(event){
+  $('pre').fadeOut(600)
+})
+// document.querySelector('#read-mifare pre').textContent = readMifareTag.toString();
 
-document.querySelector('#emulate pre').textContent = emulateTag.toString();
-document.querySelector('#emulate button').addEventListener('click', onEmulateTagButtonClicked);
+// document.querySelector('#write-ndef pre').textContent = writeNdefTag.toString();
+// document.querySelector('#write-ndef button').addEventListener('click', onWriteNdefTagButtonClicked);
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-  document.querySelector('#logContainer').classList.add('small');
-});
+// document.querySelector('#write-mifare pre').textContent = writeMifareTag.toString();
+// document.querySelector('#write-mifare button').addEventListener('click', onWriteMifareTagButtonClicked);
 
-document.querySelector('.drawer').addEventListener('click', function(e) {
-  document.querySelector('#logContainer').classList.toggle('small');
-});
+// document.querySelector('#emulate pre').textContent = emulateTag.toString();
+// document.querySelector('#emulate button').addEventListener('click', onEmulateTagButtonClicked);
+
+// $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+//   document.querySelector('#logContainer').classList.add('small');
+// });
+
+// document.querySelector('.drawer').addEventListener('click', function(e) {
+//   document.querySelector('#logContainer').classList.toggle('small');
+// });

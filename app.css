@@ -1,75 +1,69 @@
-html, body {
-  height: 100%;
+html{
+  overflow: auto;
 }
 
-.wrapper {
-  margin: 0px 20px 0 20px;
+#read-template,#write-template{
+  display: none;
 }
 
-textarea {
+.page-header{
+  text-align:center;
+  font-weight:700;
+}
+
+.panel-heading {
+  text-align: center;
+  padding: 5px 15px;
+}
+.list-group-item:hover{
+ cursor:pointer;
+ background-color:#f5f5f5;
+}
+.panel-body{
+ text-align:center
+}
+
+.panel-footer {
+  padding: 1px 15px;
+  color: #A0A0A0;
+}
+
+.profile-img {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
   display: block;
-  width: 660px;
-  height: 220px;
-  font-family: "Courier New", monospace;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.info-area{
+  border-top: 1px solid #ddd;
+  padding-top: 50px;
+  margin-top: 15px;
+}
+.logs{
+  border: 1px solid #ddd;
+  margin-top: 36px; 
+  padding: 25px;
+  padding-top: 34px;
 }
 
-.hidden {
-  display: none
-}
-
-dd {
-  margin-bottom: 10px;
-}
-
-#device-thumbnail {
-  position: fixed;
-}
-
-#device-info {
-  margin-left: 150px;
-}
-
-.tab-content {
-  margin-bottom: 10px;
-}
-
-pre {
-  -webkit-user-select: text;
-  cursor: text;
-}
-
-.tab-content {
-  overflow: initial;
-}
-
-#logContainer {
-  height: 200px;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  background: #F5F5F5;
-  transition: height .2s ease-in-out;
-}
-
-.logs {
-  overflow-y: auto;
-  height: 190px;
-}
-
-.logs pre {
-  margin: 0 0 1px;
-  border: none;
-  border-bottom: 1px dotted #DDD;
-  border-radius: 0px;
+.clear-logs{
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  position: absolute;
+  float: right;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
   padding: 5px;
 }
 
-.drawer {
-  height: 10px;
-  background: #DDD;
-  cursor: pointer;
+.clear-logs:hover{
+  color: gray;
 }
 
-.small {
-  height: 10px !important;
+#user-data{
+  margin-top: 10px;
 }
